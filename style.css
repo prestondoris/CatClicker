@@ -4,6 +4,7 @@ main {
     grid-template-columns: auto auto auto;
     grid-gap: 10px;
 }
+
 .cat {
     width: 49.5%;
 }
@@ -19,4 +20,8 @@ main {
 
 .catImg {
     width: 100px;
+}
+
+.displayImg {
+    width: 600px;
 }

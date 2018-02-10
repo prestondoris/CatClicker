@@ -1,19 +1,47 @@
-
-
-var aside = document.getElementsByTagName('aside');
+var ul = document.getElementById('catList');
+var displayArea = document.getElementById('displayArea');
 var catList = ["cat1.jpg", "cat2.jpg", "cat3.jpg", "cat4.jpg", "cat5.jpg"];
+var catNames = ["Flynn", "Jack & Jill", "Tony Stark", "Mittens", "George"]
+var catCount = [0,0,0,0,0];
 
 
 for(var i=0; i < catList.length; i++) {
     var newLi = document.createElement('li');
     var newImg = document.createElement('img');
+    var span = document.createElement('span');
+    span.textContent = catNames[i]
     newImg.setAttribute('src', catList[i]);
     newImg.setAttribute('class', 'catImg');
     newLi.appendChild(newImg);
-    newLi.addEventListener('click', function(){});
-    aside.appendChild(newLi);
+    newLi.appendChild(span);
+    ul.appendChild(newLi);
+    var count = catCount[i];
+    newLi.addEventListener('click', (function(numCount, j) {
+        return function () {
+            numCount++
+            catCount[j] = numCount;
+            displayArea.innerHTML = '';
+            createDisplayItem(j);
+        }
+    })(count, i));
 }
 
+createDisplayItem(0);
+
+function createDisplayItem(index) {
+    var div = document.createElement('div');
+    var pName = document.createElement('p');
+    var pCount = document.createElement('p');
+    var img = document.createElement('img');
+    pName.textContent = catNames[index];
+    pCount.textContent = catCount[index];
+    img.setAttribute('src', catList[index]);
+    img.setAttribute('class', 'displayImg');
+    div.appendChild(pName);
+    div.appendChild(pCount);
+    div.appendChild(img);
+    displayArea.appendChild(div);
+}
 
 
 /*
