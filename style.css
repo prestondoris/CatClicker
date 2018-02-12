@@ -5,6 +5,11 @@ main {
     grid-gap: 10px;
 }
 
+nav {
+    display: inline-block;
+    list-style-type: none;
+}
+
 .cat {
     width: 49.5%;
 }
