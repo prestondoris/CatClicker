@@ -1,32 +1,32 @@
 $(function(){
 
     var model = {
-        currentCat = null;
-        cats = [
+        currentCat: null,
+        cats: [
             {
                 name: "Flynn",
                 img: "cat1.jpg",
-                count: 0;
+                count: 0
             },
             {
                 name: "Jack and Jill",
                 img: "cat2.jpg",
-                count: 0;
+                count: 0
             },
             {
                 name: "Tony Stark",
                 img: "cat3.jpg",
-                count: 0;
+                count: 0
             },
             {
                 name: "Mittens",
                 img: "cat4.jpg",
-                count: 0;
+                count: 0
             },
             {
                 name: "George",
                 img: "cat5.jpg",
-                count: 0;
+                count: 0
             }
         ]
     }
@@ -34,6 +34,7 @@ $(function(){
     var octopus = {
         init: function() {
             model.currentCat = model.cats[0];
+            console.log(model.cats[0]);
             viewList.init();
             viewDisplay.init();
         },
@@ -44,35 +45,44 @@ $(function(){
         },
 
         // 2. Set the selected cat to the Current Cat
-        setNewCurrentCat: function(cat) {
+        setCurrentCat: function(cat) {
             model.currentCat = cat;
         },
 
-        // 3. Be able to send all the cats to the list view
+        // 3. Get all cats from the model
+        getCats: function() {
+            return model.cats;
+        },
+
         // 4. Increment the count for the cat that is clicked.
         incrementCount: function() {
-            var cat = model.currentCat;
-            
-        },
-
-        postCount: function() {
-
-        },
-
-        getData: function() {
-            return model;
+            model.currentCat.count++;
+            viewDisplay.render();
         }
     }
 
     var viewList = {
         init: function() {
-            var list = $('.catList');
-
-        }
+            this.list = $('#catList');
+            this.cats = octopus.getCats();
+            this.render();
+        },
 
         // This function will display the list of cats for the user.
         render: function() {
-
+            for(var i=0; i<this.cats.length; i++) {
+                var li = document.createElement('li');
+                var button = document.createElement('button');
+                button.textContent = this.cats[i].name;
+                li.appendChild(button);
+                this.list.append(li);
+                li.addEventListener('click', (function(thisCat) {
+                    return function() {
+                        octopus.setCurrentCat(thisCat);
+                        viewDisplay.render();
+                    }
+                })(this.cats[i]));
+            }
         }
     }
 
@@ -85,25 +95,23 @@ $(function(){
             this.catImgElm = $('.catImg');
 
             // allow a user to click on the current cat picture in increment count
-            this.catImgElm.addEventListener('click', (function(){})(
-
-            ));
+            this.catImgElm.click(function(){
+                octopus.incrementCount();
+            });
 
             this.render();
-        }
+        },
 
         render: function() {
-            // Get the current Cat from the octopus
             var currentCat = octopus.currentCat();
 
-            //put the current cat into the view.
-            this.catNameElm.textContent = current.name;
-            this.catCountElm.textContent = current.count;
-            this.catImgElm.innerHTML = '<img src="'+ current.img +'">'
+            this.catNameElm.html(currentCat.name);
+            this.catCountElm.html(currentCat.count);
+            this.catImgElm.html('<img src="'+ currentCat.img +'">');
         }
     }
 
-    octupus.init();
+    octopus.init();
 });
 
 /*
