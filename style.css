@@ -1,6 +1,7 @@
 main {
     margin: 0 auto;
     width: 80%;
+
 }
 
 .grid {
@@ -24,9 +25,9 @@ li {
     list-style-type: none;
 }
 
-img {
+#catImg {
     width: 600px;
-    cursor: pointer;
+    cursor: pointer
 }
 
 .displayImg {

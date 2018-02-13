@@ -2,31 +2,38 @@ $(function(){
 
     var model = {
         currentCat: null,
+        // admin=false is hidden - admin=true is shown
+        admin: false,
         cats: [
             {
                 name: "Flynn",
                 img: "cat1.jpg",
-                count: 0
+                count: 0,
+                id: 1
             },
             {
                 name: "Jack and Jill",
                 img: "cat2.jpg",
-                count: 0
+                count: 0,
+                id: 2
             },
             {
                 name: "Tony Stark",
                 img: "cat3.jpg",
-                count: 0
+                count: 0,
+                id: 3
             },
             {
                 name: "Mittens",
                 img: "cat4.jpg",
-                count: 0
+                count: 0,
+                id: 4
             },
             {
                 name: "George",
                 img: "cat5.jpg",
-                count: 0
+                count: 0,
+                id: 5
             }
         ]
     }
@@ -34,9 +41,9 @@ $(function(){
     var octopus = {
         init: function() {
             model.currentCat = model.cats[0];
-            console.log(model.cats[0]);
             viewList.init();
             viewDisplay.init();
+            viewAdmin.init();
         },
 
         // 1. Get the current cat that is selected
@@ -58,6 +65,53 @@ $(function(){
         incrementCount: function() {
             model.currentCat.count++;
             viewDisplay.render();
+        },
+
+        openView: function() {
+            var form = $('form');
+            form.show();
+        },
+
+        closeView: function() {
+            var form = $('form');
+            form.hide();
+        },
+
+        setNewValues: function() {
+            var formName = $('#name').val();
+            var formClicks = $('#clicks').val();
+            var formImg = $('#img').val();
+            var name, clicks, img;
+            var currentCatId = model.currentCat.id;
+
+            if(formName == '') {
+                name = this.currentCat().name;
+            } else {
+                name = formName
+            }
+
+            if(formClicks == '') {
+                clicks = this.currentCat().count;
+            } else {
+                clicks = formClicks
+            }
+
+            if(formImg == '') {
+                img = this.currentCat().img;
+            } else {
+                img = formImg
+            }
+
+            $('#name').val('');
+            $('#clicks').val('');
+            $('#img').val('');
+
+            model.cats[currentCatId-1].name = name;
+            model.cats[currentCatId-1].count = clicks;
+            model.cats[currentCatId-1].img = img;
+
+            this.setCurrentCat(model.cats[currentCatId-1]);
+            viewDisplay.render();
         }
     }
 
@@ -73,7 +127,7 @@ $(function(){
             for(var i=0; i<this.cats.length; i++) {
                 var li = document.createElement('li');
                 var button = document.createElement('button');
-                button.textContent = this.cats[i].name;
+                button.textContent = 'Cat'+ (i+1);
                 li.appendChild(button);
                 this.list.append(li);
                 li.addEventListener('click', (function(thisCat) {
@@ -83,6 +137,7 @@ $(function(){
                     }
                 })(this.cats[i]));
             }
+
         }
     }
 
@@ -90,9 +145,9 @@ $(function(){
         init: function() {
             // Get the DOM elements inside the displayArea and store them for
             // use later.
-            this.catNameElm = $('.catName');
-            this.catCountElm = $('.catCount');
-            this.catImgElm = $('.catImg');
+            this.catNameElm = $('#catName');
+            this.catCountElm = $('#catCount');
+            this.catImgElm = $('#catImg');
 
             // allow a user to click on the current cat picture in increment count
             this.catImgElm.click(function(){
@@ -107,7 +162,34 @@ $(function(){
 
             this.catNameElm.html(currentCat.name);
             this.catCountElm.html(currentCat.count);
-            this.catImgElm.html('<img src="'+ currentCat.img +'">');
+            this.catImgElm.attr('src', currentCat.img);
+        }
+    }
+
+    var viewAdmin = {
+        init: function() {
+            var admin = $('#admin');
+            var save = $('#save');
+            var cancel = $('#cancel');
+
+            admin.click(function() {
+                octopus.openView();
+            });
+
+            cancel.click(function() {
+                octopus.closeView();
+            });
+
+            save.click(function() {
+                octopus.setNewValues();
+                octopus.closeView();
+            });
+
+            this.render();
+        },
+
+        render: function () {
+            $('form').hide();
         }
     }
 

@@ -13,9 +13,23 @@
                     <ul id="catList"></ul>
                 </nav>
                 <section id="displayArea">
-                    <p class="catName"></p>
-                    <p class="catCount"></p>
-                    <img class="catImg">
+                    <section class="admin">
+                        <input type="button" value="Admin" id="admin">
+                        <form class="form">
+                            <label for="name">Name:</label>
+                            <input name="name" type="text" id="name">
+                            <label for="clicks">Clicks:</label>
+                            <input name="clicks" type="text" id="clicks">
+                            <label for="img">Image Source:</label>
+                            <input name="img" type="text" id="img">
+                            <br>
+                            <input type="button" value="save" id="save">
+                            <input type="button" value="cancel" id="cancel">
+                        </form>
+                    </section>
+                    <p id="catName"></p>
+                    <p id="catCount"></p>
+                    <img id="catImg">
                 </section>
             </section>
         </main>
